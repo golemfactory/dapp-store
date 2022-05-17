@@ -12,8 +12,7 @@ nodes:
     payload: "db"
     entrypoint:
       - ["/bin/run_rqlite.sh"]
-    network:
-      "default"
+    network: "default"
     ip:
       - "192.168.0.2"
   http:
@@ -24,12 +23,11 @@ nodes:
     http_proxy:
       ports:
         - "5000"  # specify just the remote port, allow the local port to be automatically chosen
-    network:
-      "default"
+    network: "default"
     ip:
       - "192.168.0.3"
     depends_on:
-      "db"
+      - "db"
 networks:
   default:
     ip: "192.168.0.0/24"
