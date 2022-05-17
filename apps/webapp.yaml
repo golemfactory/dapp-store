@@ -19,7 +19,6 @@ nodes:
   http:
     payload: "http"
     entrypoint:
-      - ["/bin/sh", "-c", "sleep 30" ]  # artificially delay the launch (work-around for explicit and/or implicit ordering support)
       - ["/bin/bash", "-c", "cd /webapp && python app.py --db-address 192.168.0.2 --db-port 4001 initdb"]
       - ["/bin/bash", "-c", "cd /webapp && python app.py --db-address 192.168.0.2 --db-port 4001 run > /webapp/out 2> /webapp/err &"]
     http_proxy:
@@ -29,6 +28,8 @@ nodes:
       "default"
     ip:
       - "192.168.0.3"
+    depends_on:
+      "db"
 networks:
   default:
     ip: "192.168.0.0/24"
