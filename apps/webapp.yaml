@@ -1,0 +1,33 @@
+payloads:
+  db:
+    runtime: "vm"
+    params:
+      image_hash: "85021afecf51687ecae8bdc21e10f3b11b82d2e3b169ba44e177340c"
+  http:
+    runtime: "vm"
+    params:
+      image_hash: "c37c1364f637c199fe710ca62241ff486db92c875b786814c6030aa1"
+nodes:
+  db:
+    payload: "db"
+    entrypoint:
+      - ["/bin/run_rqlite.sh"]
+    network: "default"
+    ip:
+      - "192.168.0.2"
+  http:
+    payload: "http"
+    entrypoint:
+      - ["/bin/bash", "-c", "cd /webapp && python app.py --db-address 192.168.0.2 --db-port 4001 initdb"]
+      - ["/bin/bash", "-c", "cd /webapp && python app.py --db-address 192.168.0.2 --db-port 4001 run > /webapp/out 2> /webapp/err &"]
+    http_proxy:
+      ports:
+        - "5000"  # specify just the remote port, allow the local port to be automatically chosen
+    network: "default"
+    ip:
+      - "192.168.0.3"
+    depends_on:
+      - "db"
+networks:
+  default:
+    ip: "192.168.0.0/24"
