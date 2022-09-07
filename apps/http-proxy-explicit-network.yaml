@@ -1,6 +1,6 @@
 meta:
   name: "Local HTTP Proxy demo with explicit network"
-  description: "An minimal example presenting a local HTTP proxy connecting to
+  description: "A minimal example presenting a local HTTP proxy connecting to
     a static website deployed on the provider's end.
     
     Here, we choose to specify the network address explicitly.
