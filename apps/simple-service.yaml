@@ -1,3 +1,7 @@
+meta:
+  name: "A simple, non-networked service."
+  description: "Minimal example of a non-networked service."
+  author: "GolemFactory"
 payloads:
   simple-service:
     runtime: "vm"
