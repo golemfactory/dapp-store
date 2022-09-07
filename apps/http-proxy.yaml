@@ -1,3 +1,11 @@
+meta:
+  name: "Local HTTP Proxy demo"
+  description: "A minimal example presenting a local HTTP proxy connecting to
+    a static website deployed on the provider's end.
+    
+    The network connecting the requestor and the provider is configured implicitly.
+  "
+  author: "GolemFactory"
 payloads:
   nginx:
     runtime: "vm"
