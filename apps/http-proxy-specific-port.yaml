@@ -15,7 +15,7 @@ payloads:
 nodes:
   http:
     payload: "nginx"
-    entrypoint:
+    init:
         - ["/docker-entrypoint.sh"]
         - ["/bin/chmod", "a+x", "/"]
         - ["/bin/sh", "-c", 'echo "Hello from inside Golem!" > /usr/share/nginx/html/index.html']
