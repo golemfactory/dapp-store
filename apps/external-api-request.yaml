@@ -3,7 +3,9 @@ meta:
   description: "
   POC example of an payload allowing external API requests.
 
+
   NOTE:
+
   This example is *experimental* and requires providers running yagna 0.12
   with a specific certificate chain added to their keystores.
   "
