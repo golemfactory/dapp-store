@@ -1,9 +1,10 @@
 meta:
   name: "ToDo List App"
   description: "Application to store and manage your TODOs, powered by Golem Network"
-  author: "GolemFactory"
+  author: "Golem Factory"
   version: "0.2.0"
   homepage: https://github.com/golemfactory/dapp-experiments/tree/main/01_todo_app
+  image: "https://placekitten.com/350/250"
 payloads:
   db:
     runtime: "vm"
