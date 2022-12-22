@@ -10,7 +10,6 @@ meta:
   with a specific certificate chain added to their keystores.
   "
   author: "Golem Factory"
-  image: "https://placekitten.com/350/250"
 payloads:
   external-api-request:
     runtime: "vm/manifest"

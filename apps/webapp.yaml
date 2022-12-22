@@ -4,7 +4,6 @@ meta:
   web server and a database host deployed together on the Golem Network.
   "
   author: "Golem Factory"
-  image: "https://placekitten.com/350/250"
   version: "0.1.0"
 payloads:
   db:

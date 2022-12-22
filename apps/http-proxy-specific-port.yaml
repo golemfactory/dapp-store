@@ -7,7 +7,6 @@ meta:
   if this port is not available on the proxying machine.
   "
   author: "Golem Factory"
-  image: "https://placekitten.com/350/250"
 payloads:
   nginx:
     runtime: "vm"

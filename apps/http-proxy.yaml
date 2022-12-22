@@ -6,7 +6,6 @@ meta:
     The network connecting the requestor and the provider is configured implicitly.
   "
   author: "Golem Factory"
-  image: "https://placekitten.com/350/250"
 payloads:
   nginx:
     runtime: "vm"

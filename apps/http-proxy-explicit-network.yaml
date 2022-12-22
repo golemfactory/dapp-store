@@ -6,7 +6,6 @@ meta:
     Here, we choose to specify the network address explicitly.
   "
   author: "Golem Factory"
-  image: "https://placekitten.com/350/250"
 payloads:
   nginx:
     runtime: "vm"
