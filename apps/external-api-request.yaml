@@ -9,7 +9,7 @@ meta:
   This example is *experimental* and requires providers running yagna 0.12
   with a specific certificate chain added to their keystores.
   "
-  author: "GolemFactory"
+  author: "Golem Factory"
 payloads:
   external-api-request:
     runtime: "vm/manifest"

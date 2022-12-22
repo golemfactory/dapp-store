@@ -5,7 +5,7 @@ meta:
     
     Here, we choose to specify the network address explicitly.
   "
-  author: "GolemFactory"
+  author: "Golem Factory"
 payloads:
   nginx:
     runtime: "vm"

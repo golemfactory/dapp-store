@@ -6,7 +6,7 @@ meta:
   The local port for the HTTP proxy is explicitly set to 8080. The example will fail
   if this port is not available on the proxying machine.
   "
-  author: "GolemFactory"
+  author: "Golem Factory"
 payloads:
   nginx:
     runtime: "vm"
