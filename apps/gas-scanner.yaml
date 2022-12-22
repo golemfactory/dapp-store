@@ -1,6 +1,7 @@
 meta:
-  name: "Gas scanner demo app"
-  author: "GolemFactory"
+  name: "Gas Scanner"
+  author: "Golem Factory"
+  description: "App checking the current state of gass prices on the Ethereum mainnet chain, hosted and calculated on Golem Network"
   version: "0.1.0"
 payloads:
   mongo:

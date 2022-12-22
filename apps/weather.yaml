@@ -1,7 +1,7 @@
 meta:
-  name: "Weather Stats App"
-  description: "Application to get Weather, powered by Golem Network"
-  author: "GolemFactory"
+  name: "Weather Stats"
+  description: "A minimal example presenting a local HTTP Proxy connecting to a static website deployed on the provider’s end. The network connecting the requestor and the provider is configured implicitly."
+  author: "Golem Factory"
   version: "0.1.0"
 payloads:
   cache:
