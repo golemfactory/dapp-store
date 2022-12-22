@@ -1,0 +1,84 @@
+meta:
+  name: "Gas scanner demo app"
+  author: "GolemFactory"
+  version: "0.1.0"
+payloads:
+  mongo:
+    runtime: "vm"
+    params:
+      image_hash: "69dec7e8e106143d317516580d8e8f36ec014f484eb73b79a042a1f8"
+  backend:
+    runtime: "vm/manifest"
+    params:
+      manifest: ewogICAgInZlcnNpb24iOiAiMC4xLjAiLAogICAgImNyZWF0ZWRBdCI6ICIyMDIyLTEyLTAxVDAwOjAwOjAwLjAwMDAwMFoiLAogICAgImV4cGlyZXNBdCI6ICIyMTAwLTAxLTAxVDAwOjAwOjAwLjAwMDAwMFoiLAogICAgInBheWxvYWQiOiBbCiAgICAgICAgewogICAgICAgICAgInBsYXRmb3JtIjogewogICAgICAgICAgICAiYXJjaCI6ICJ4ODZfNjQiLAogICAgICAgICAgICAib3MiOiAibGludXgiCiAgICAgICAgICB9LAogICAgICAgICAgInVybHMiOiBbCiAgICAgICAgICAgICJodHRwOi8vZ2lyZXBvLmRldi5nb2xlbS5uZXR3b3JrOjgwMDAvZG9ja2VyLWdhc19zY2FubmVyX2JhY2tlbmRfaW1hZ2UtbGF0ZXN0LTkxYzQ3MTUxN2EuZ3ZtaSIKICAgICAgICAgIF0sCiAgICAgICAgICAiaGFzaCI6ICJzaGEzOjA1MjcwYThhOTM4ZmY1ZjVlMzBiMGU2MWJjOTgzYThjM2UyODZjNWNkNDE0YTMyZTFhMDc3NjU3IgogICAgICAgIH0KICAgICAgXSwKICAgICAgImNvbXBNYW5pZmVzdCI6IHsKICAgICAgInZlcnNpb24iOiAiMC4xLjAiLAogICAgICAic2NyaXB0IjogewogICAgICAgICJjb21tYW5kcyI6IFsKICAgICAgICAgICJydW4gLioiCiAgICAgICAgXSwKICAgICAgICAibWF0Y2giOiAicmVnZXgiCiAgICAgIH0sCiAgICAgICJuZXQiOiB7CiAgICAgICAgImluZXQiOiB7CiAgICAgICAgICAib3V0IjogewogICAgICAgICAgICAicHJvdG9jb2xzIjogWwogICAgICAgICAgICAgICJodHRwIgogICAgICAgICAgICBdLAogICAgICAgICAgICAidXJscyI6IFsKICAgICAgICAgICAgICAgICJodHRwOi8vYm9yLmdvbGVtLm5ldHdvcmsiCiAgICAgICAgICAgIF0KICAgICAgICAgIH0KICAgICAgICB9CiAgICAgIH0KICAgIH0KICB9
+  frontend:
+    runtime: "vm"
+    params:
+      image_hash: "246254e60209a9969634cfa9990a4d5f671e1bdce7c94fe9b76e76e0"
+nodes:
+  mongo:
+    payload: "mongo"
+    init:
+      - run:
+          args: ["/bin/bash", "-c", "/usr/local/bin/docker-entrypoint.sh /usr/bin/mongod --bind_ip_all &"]
+    network: "default"
+    ip:
+      - "192.168.0.2"
+    tcp_proxy:
+      ports:
+        - "27017"
+  backend:
+    payload: "backend"
+    init:
+      - run:
+          args: [
+            "/bin/bash",
+            "-c",
+            "echo -e \"PROVIDER_ADDRESS=http://bor.golem.network/\n
+            MONGO_DB_CONNECTION_STRING=mongodb://192.168.0.2:27017\n
+            MONGO_DB_NAME=GasUsage\n
+            AGGREGATOR_DELAY_START=60\n
+            AGGREGATOR_DELAY_SECONDS='60'\n
+            COLD_START_BLOCK='-1'\n
+            WATCHDOG_START_AGGREGATOR='node dist/gas_scanner_aggregator.js'\n
+            WATCHDOG_START_SERVER='node dist/gas_scanner_server.js'\n
+            WATCHDOG_START_COMMAND='node dist/gas_scanner_main.js --fillMissingBlocks'\n
+            WATCHDOG_AFTER_KILL_DELAY_MS=5000\n
+            WATCHDOG_AFTER_START_DELAY_MS=15000\n
+            WATCHDOG_ALLOWED_SECONDS_BEHIND=30\n
+            WATCHDOG_CHECK_EVERY_MS=250000\n
+            SERVER_LISTEN_PORT=7888\n
+            SERVER_CACHE_VALIDITY=3000\n\" > .env"
+          ]
+      - run:
+          args: ["/bin/bash", "-c", "node dist/gas_scanner_aggregator.js > agg_stdout 2> agg_stderr &"]
+      - run:
+          args: ["/bin/bash", "-c", "node dist/gas_scanner_server.js > srv_stdout 2> srv_stderr &"]
+      - run:
+          args: ["/bin/bash", "-c", "node dist/gas_scanner_main.js --fillMissingBlocks > main_stdout 2> main_stderr &"]
+    http_proxy:
+      ports:
+        - "7888"
+    network: "default"
+    ip:
+      - "192.168.0.3"
+    depends_on:
+      - "mongo"
+  frontend:
+    payload: "frontend"
+    init:
+      - run:
+          args: ["/bin/bash", "-c", "chmod a+x /"]
+      - run:
+          args: ["/bin/bash", "-c", "/bin/run.sh 192.168.0.3 &"]
+    http_proxy:
+      ports:
+        - "80"
+    network: "default"
+    ip:
+      - "192.168.0.4"
+    depends_on:
+      - "backend"
+networks:
+  default:
+    ip: "192.168.0.0/24"
