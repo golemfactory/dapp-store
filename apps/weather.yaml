@@ -1,7 +1,7 @@
 meta:
-  name: "Weather Stats App"
-  description: "Application to get Weather, powered by Golem Network"
-  author: "GolemFactory"
+  name: "Weather Stats"
+  description: "A minimal example of application getting current weather based on given location."
+  author: "Golem Factory"
   version: "0.1.0"
 payloads:
   cache:
