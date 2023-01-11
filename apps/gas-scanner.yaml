@@ -25,9 +25,6 @@ nodes:
     network: "default"
     ip:
       - "192.168.0.2"
-    tcp_proxy:
-      ports:
-        - "27017"
   backend:
     payload: "backend"
     init:
@@ -57,9 +54,6 @@ nodes:
           args: ["/bin/bash", "-c", "node dist/gas_scanner_server.js > srv_stdout 2> srv_stderr &"]
       - run:
           args: ["/bin/bash", "-c", "node dist/gas_scanner_main.js --fillMissingBlocks > main_stdout 2> main_stderr &"]
-    http_proxy:
-      ports:
-        - "7888"
     network: "default"
     ip:
       - "192.168.0.3"
