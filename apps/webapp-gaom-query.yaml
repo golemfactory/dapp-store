@@ -1,0 +1,40 @@
+meta:
+  name: "Simple, db-enabled web application."
+  description: "An example showcasing a trivial web application consisting of a
+  web server and a database host deployed together on the Golem Network.
+  "
+  author: "Golem Factory"
+  version: "0.1.0"
+payloads:
+  db:
+    runtime: "vm"
+    params:
+      image_hash: "85021afecf51687ecae8bdc21e10f3b11b82d2e3b169ba44e177340c"
+  http:
+    runtime: "vm"
+    params:
+      image_hash: "c37c1364f637c199fe710ca62241ff486db92c875b786814c6030aa1"
+nodes:
+  db:
+    payload: "db"
+    init:
+      - run:
+          args:
+            - "/bin/run_rqlite.sh"
+    network: "default"
+  http:
+    payload: "http"
+    init:
+      - run:
+          args: ["/bin/bash", "-c", "cd /webapp && python app.py --db-address ${nodes.db.network_node.ip} --db-port 4001 initdb"]
+      - run:
+          args: ["/bin/bash", "-c", "cd /webapp && python app.py --db-address ${nodes.db.network_node.ip} --db-port 4001 run > /webapp/out 2> /webapp/err &"]
+    http_proxy:
+      ports:
+        - "5000"  # specify just the remote port, allow the local port to be automatically chosen
+    network: "default"
+    depends_on:
+      - "db"
+networks:
+  default:
+    ip: "192.168.0.0/24"
