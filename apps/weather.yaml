@@ -28,37 +28,33 @@ nodes:
   cache:
     payload: "cache"
     init:
-      - [
-        "/bin/bash",
-        "-c",
-        "redis-server --bind 0.0.0.0 --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81 --loglevel debug > /dev/null &",
-      ]
+      - ["/bin/bash", "-c", "redis-server --bind 0.0.0.0 --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81 --loglevel debug > /dev/null &"]
     network: "default"
     ip:
       - "192.168.0.2"
   api:
     payload: "api"
     init:
-      - [
-        "/bin/bash",
-        "-c",
-        "uvicorn weather.app:app --host 192.168.0.3 --port 5053 &",
-      ]
+      - ["/bin/bash", "-c", "uvicorn weather.app:app --host 192.168.0.3 --port 5053 &"]
     network: "default"
     ip:
       - "192.168.0.3"
+    depends_on:
+      - "cache"
   app:
     payload: "app"
     init:
-      - [ "/docker-entrypoint.sh" ]
-      - [ "/bin/chmod", "a+x", "/" ]
-      - [ "/usr/sbin/nginx" ]
+      - ["/docker-entrypoint.sh"]
+      - ["/bin/chmod", "a+x", "/"]
+      - ["/usr/sbin/nginx"]
     http_proxy:
       ports:
         - "80"
     network: "default"
     ip:
       - "192.168.0.4"
+    depends_on:
+      - "api"
 networks:
   default:
     ip: "192.168.0.0/24"
